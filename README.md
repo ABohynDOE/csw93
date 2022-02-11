@@ -5,7 +5,7 @@ CSW93 is a Python package that generates all regular fractional factorial two-le
 
 [1]: <https://www.jstor.org/stable/1403599>
 
-## Instalation
+## Installation
 
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install csw93.
 
