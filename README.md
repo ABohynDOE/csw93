@@ -45,3 +45,8 @@ Please make sure to update tests as appropriate.
 ## License
 
 [MIT](https://choosealicense.com/licenses/mit/)
+
+## Changelog
+
+- 0.2: corrected WLP's
+- 0.1: initial version

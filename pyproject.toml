@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "csw93"
-version = "0.1.0"
+version = "0.2.0"
 description = "Regular Fractional Factorial two-level designs from the paper of Chen, Sun and Wu (1993)"
 authors = ["Alexandre Bohyn <alexandre.bohyn@kuleuven.be>"]
 license = "MIT"
