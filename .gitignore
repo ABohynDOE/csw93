@@ -3,3 +3,5 @@
 .coverage
 tests/__pycache__/
 csw93/__pycache__/
+.venv/
+*.pyc

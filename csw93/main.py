@@ -89,10 +89,10 @@ def basic_factor_matrix(n_bf: int):
         Basic factors matrix.
 
     """
-    mat = np.zeros((2**n_bf, n_bf))
+    mat = np.zeros((2 ** n_bf, n_bf))
     for i in range(n_bf):
-        a = 2**n_bf // (2 ** (i + 1))
-        b = 2**n_bf // (2 * a)
+        a = 2 ** n_bf // (2 ** (i + 1))
+        b = 2 ** n_bf // (2 * a)
         col_list = repeat([0] * a + [1] * a, b)
         col = list(chain(*col_list))
         mat[:, i] = col
@@ -141,7 +141,7 @@ def get_design(n_runs: int, index: str):
         print(index, "is not a valid design index")
         return None
     # Extract column numbers
-    basic_factors = [2**i for i in range(n_bf)]
+    basic_factors = [2 ** i for i in range(n_bf)]
     added_factors = list(map(int, design_info["cols"].split(",")))
     columns = [i - 1 for i in basic_factors + added_factors]
     columns.sort()
