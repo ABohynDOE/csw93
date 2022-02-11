@@ -1,5 +1,6 @@
 import numpy as np
 import pandas as pd
+import pkg_resources
 from itertools import chain, repeat
 
 
@@ -67,8 +68,7 @@ def load_tables():
         Table of all designs.
 
     """
-    # filepath = pkg_resources.resource_stream(__name__, 'data/tables.csv')
-    filepath = "data/tables.csv"
+    filepath = pkg_resources.resource_stream(__name__, 'data/tables.csv')
     df = pd.read_csv(filepath, header=0, sep=",")
     df["u_id"] = df["n.runs"].astype(str) + "." + df["index"]
     return df.set_index("u_id")
