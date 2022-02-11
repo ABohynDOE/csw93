@@ -245,4 +245,4 @@ def get_cfi(n_runs: int, index: str):
 
 
 if __name__ == "__main__":
-    print("CSW93 package fully loaded")
+    pass
