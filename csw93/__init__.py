@@ -1,4 +1,4 @@
 __version__ = "0.1.0"
-from .main import design_matrix  # noqa: F401
-
-# TODO: make import statement clean
+from .main import get_design  # noqa: F401
+from .main import get_wlp  # noqa: F401
+from .main import get_cfi  # noqa: F401

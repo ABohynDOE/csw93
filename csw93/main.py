@@ -155,5 +155,94 @@ def get_design(n_runs: int, index: str):
     return mat
 
 
+def get_wlp(n_runs: int, index: str):
+    """
+    Retrieve the word length pattern (WLP) starting on length 3 words for
+    a given run size and design index. For 64-run design, the (WLP) starts
+    on length 4 words.
+
+    Parameters
+    ----------
+    n_runs : int
+        Number of runs
+    index : str
+        Index of the design. Equivalent to the first column in the tables of
+        Chen, Sun and Wu (1993)
+
+    Returns
+    -------
+    wlp : List[int]
+        Word length pattern
+
+    Raises
+    ------
+    ValueError
+        Number of runs must be a power of 2.
+        Index must correspond to a design in the paper.
+    """
+    # Test if nbr of runs is a power of two
+    if np.log2(n_runs) % 1 != 0:
+        raise ValueError("Number of runs must be a power of 2")
+    # Load the tables
+    table = load_tables()
+    # Build index
+    design_index = str(n_runs) + "." + index
+    # Retrieve information
+    try:
+        design_info = table.loc[design_index]
+    except KeyError:
+        print(index, "is not a valid design index")
+        return None
+    # Extract WLP string
+    wlp_str = design_info["wlp"]
+    wlp = list(map(int, wlp_str.split(",")))
+    return wlp
+
+
+def get_cfi(n_runs: int, index: str):
+    """
+    Retrieve the number of clear two-factor interactions for a given run size and
+    design index.
+
+    A two-factor interaction is considered clear if it not aliased with any other
+    main effect or two-factor interaction.
+
+    Parameters
+    ----------
+    n_runs : int
+        Number of runs
+    index : str
+        Index of the design. Equivalent to the first column in the tables of
+        Chen, Sun and Wu (1993)
+
+    Returns
+    -------
+    cfi : int
+        Number of clear two-factor interactions
+
+    Raises
+    ------
+    ValueError
+        Number of runs must be a power of 2.
+        Index must correspond to a design in the paper.
+    """
+    # Test if nbr of runs is a power of two
+    if np.log2(n_runs) % 1 != 0:
+        raise ValueError("Number of runs must be a power of 2")
+    # Load the tables
+    table = load_tables()
+    # Build index
+    design_index = str(n_runs) + "." + index
+    # Retrieve information
+    try:
+        design_info = table.loc[design_index]
+    except KeyError:
+        print(index, "is not a valid design index")
+        return None
+    # Extract clear 2fi number
+    cfi = int(design_info["clear.2fi"])
+    return cfi
+
+
 if __name__ == "__main__":
-    print(get_design(16, "9-5.1"))
+    print("CSW93 package fully loaded")
