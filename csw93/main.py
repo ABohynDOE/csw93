@@ -51,14 +51,14 @@ def load_tables():
     Return a dataframe with all designs from the Chen, Sun and Wu (1993) paper.
 
     Contains the following fields:
-        n.runs          Number of runs
-        index              ID representing the design, corresponding to the CSW 1993 paper
-        n.cols          Number of columns
-        n.added         Number of added factors among the columns
-        design.rank     Rank of the design in term of the aberration criterion
-        cols            Numbers of the added columns
-        wlp             Word length pattern, starting at A3 (or A4 for 64-run designs)
-        clear.2fi       Number of clear two-factor-interactions
+        n.runs          int     Number of runs
+        index           str     ID representing the design, corresponding to the CSW 1993 paper
+        n.cols          int     Number of columns
+        n.added         int     Number of added factors among the columns
+        design.rank     int     Rank of the design in term of the aberration criterion
+        cols            str     Numbers of the added columns
+        wlp             str     Word length pattern, starting at A3 (or A4 for 64-run designs)
+        clear.2fi       int     Number of clear two-factor-interactions
 
 
     Returns
