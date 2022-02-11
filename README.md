@@ -1,6 +1,7 @@
 # csw93
+![PyPI](https://img.shields.io/pypi/v/csw93)
 
-CSW93 is a Python package that generates all regular fractional factorial two-level designs from the 1993 paper of Chen, Sun and Wu: ["A catalogue of two-level and three-level fractional factorial designs with small runs"](1).
+CSW93 is a Python package that generates all regular fractional factorial two-level designs from the 1993 paper of Chen, Sun and Wu: ["A catalogue of two-level and three-level fractional factorial designs with small runs"][1].
 
 [1]: <https://www.jstor.org/stable/1403599>
 
@@ -30,7 +31,7 @@ import csw93
 csw93.get_design(16, "8-4.1")
 
 # Word length pattern of the 32-run design with index 15-10.2
-csw93.get_wlp(16, "8-4.1")
+csw93.get_wlp(32, "8-4.1")
 
 # Number of clear two-factor interactions for the 64-run design 11-5.10
 csw93.get_cfi(64, "11-5.10")
