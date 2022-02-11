@@ -1,5 +1,6 @@
 # csw93
 ![PyPI](https://img.shields.io/pypi/v/csw93)
+[![Documentation Status](https://readthedocs.org/projects/csw93/badge/?version=latest)](https://csw93.readthedocs.io/en/latest/?badge=latest)
 
 CSW93 is a Python package that generates all regular fractional factorial two-level designs from the 1993 paper of Chen, Sun and Wu: ["A catalogue of two-level and three-level fractional factorial designs with small runs"][1].
 
@@ -47,7 +48,16 @@ Please make sure to update tests as appropriate.
 
 [MIT](https://choosealicense.com/licenses/mit/)
 
+## Roadmap
+
+List of the changes that will be implemented later on:
+
+- Add tests for Errors raised
+- Add examples to docstrings of functions
+- Include designs from Xu (2009) and reformat the filenames of the code files
+
 ## Changelog
 
-- 0.2: corrected WLP's
+- 0.3: Integration to readthedocs.io
+- 0.2: Correct WLP
 - 0.1: initial version
