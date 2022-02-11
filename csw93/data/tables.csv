@@ -1,4 +1,4 @@
-n_runs,id,n,p,i,cols,wlp,clear_2fi
+n.runs,index,n.cols,n.added,design.rank,cols,wlp,clear.2fi
 16,5-1.1,5,1,1,15,"0,0,1",10
 16,5-1.2,5,1,2,7,"0,1,0",4
 16,5-1.3,5,1,3,3,"1,0,0",7
