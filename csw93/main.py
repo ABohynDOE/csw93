@@ -14,21 +14,12 @@ def design_matrix(n_runs: int):
     n_runs : int
         Number of runs.
 
-    Raises
-    ------
-    ValueError
-        Number of runs must be a power since the design is regular.
-
     Returns
     -------
     mat : np.array
         Design matrix.
 
     """
-    # Test if nbr of runs is a power of two
-    if np.log2(n_runs) % 1 != 0:
-        raise ValueError("Number of runs must be a power of 2")
-
     # Init the matrix
     n_bf = int(np.log2(n_runs))
     mat = np.zeros((n_bf, n_runs - 1))
@@ -51,16 +42,7 @@ def load_tables():
     """
     Return a dataframe with all designs from the Chen, Sun and Wu (1993) paper.
 
-    Contains the following fields:
-        n.runs          int     Number of runs
-        index           str     ID representing the design, corresponding to the CSW 1993 paper
-        n.cols          int     Number of columns
-        n.added         int     Number of added factors among the columns
-        design.rank     int     Rank of the design in term of the aberration criterion
-        cols            str     Numbers of the added columns
-        wlp             str     Word length pattern, starting at A3 (or A4 for 64-run designs)
-        clear.2fi       int     Number of clear two-factor-interactions
-
+    Contains the following fields: n.runs, index, n.cols, n.added, design.rank, cols, wlp, clear.2fi
 
     Returns
     -------
@@ -123,6 +105,28 @@ def get_design(n_runs: int, index: str):
     mat: np.array
         Full design matrix.
 
+    Examples
+    --------
+
+    >>> # Design matrix of the 16-run design with index "8-4.1", from Table 2
+    >>> get_design(16, "8-4.3")
+    array([[0, 0, 0, 0, 0, 0, 0, 0],
+           [0, 0, 0, 0, 0, 1, 1, 1],
+           [0, 0, 0, 1, 1, 0, 0, 1],
+           [0, 0, 0, 1, 1, 1, 1, 0],
+           [0, 1, 1, 0, 0, 0, 1, 0],
+           [0, 1, 1, 0, 0, 1, 0, 1],
+           [0, 1, 1, 1, 1, 0, 1, 1],
+           [0, 1, 1, 1, 1, 1, 0, 0],
+           [1, 0, 1, 0, 1, 0, 0, 0],
+           [1, 0, 1, 0, 1, 1, 1, 1],
+           [1, 0, 1, 1, 0, 0, 0, 1],
+           [1, 0, 1, 1, 0, 1, 1, 0],
+           [1, 1, 0, 0, 1, 0, 1, 0],
+           [1, 1, 0, 0, 1, 1, 0, 1],
+           [1, 1, 0, 1, 0, 0, 1, 1],
+           [1, 1, 0, 1, 0, 1, 0, 0]])
+
     """
     # Test if nbr of runs is a power of two
     log2_runsize = np.log2(n_runs)
@@ -179,6 +183,14 @@ def get_wlp(n_runs: int, index: str):
     ValueError
         Number of runs must be a power of 2.
         Index must correspond to a design in the paper.
+
+    Example
+    -------
+
+    >>> # Word length pattern of the 32-run design with index "17-12.3", from Table 3
+    >>> get_wlp(32,"17-12.3")
+    [18, 95, 192, 354]
+
     """
     # Test if nbr of runs is a power of two
     if np.log2(n_runs) % 1 != 0:
@@ -225,6 +237,14 @@ def get_cfi(n_runs: int, index: str):
     ValueError
         Number of runs must be a power of 2.
         Index must correspond to a design in the paper.
+
+    Example
+    -------
+
+    >>> # Number of clear two-factor interaction in the 64-run design with index "11-5.2", from Table 4
+    >>> get_cfi(64,"11-5.2")
+    25
+
     """
     # Test if nbr of runs is a power of two
     if np.log2(n_runs) % 1 != 0:

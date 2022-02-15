@@ -14,7 +14,7 @@
     <script src="_static/doctools.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="prev" title="Welcome to csw93’s documentation!" href="index.html" />
+    <link rel="prev" title="csw93 - Chen, Sun and Wu (1993)" href="README.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -97,6 +97,12 @@ Chen, Sun and Wu (1993)</p></li>
     Index must correspond to a design in the paper.</p>
 </dd>
 </dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Number of clear two-factor interaction in the 64-run design with index &quot;11-5.2&quot;, from Table 4</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_cfi</span><span class="p">(</span><span class="mi">64</span><span class="p">,</span><span class="s2">&quot;11-5.2&quot;</span><span class="p">)</span>
+<span class="go">25</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -123,6 +129,27 @@ Chen, Sun and Wu (1993)</p></li>
 <dd class="field-even"><p>np.array</p>
 </dd>
 </dl>
+<p class="rubric">Examples</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Design matrix of the 16-run design with index &quot;8-4.1&quot;, from Table 2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_design</span><span class="p">(</span><span class="mi">16</span><span class="p">,</span> <span class="s2">&quot;8-4.3&quot;</span><span class="p">)</span>
+<span class="go">array([[0, 0, 0, 0, 0, 0, 0, 0],</span>
+<span class="go">       [0, 0, 0, 0, 0, 1, 1, 1],</span>
+<span class="go">       [0, 0, 0, 1, 1, 0, 0, 1],</span>
+<span class="go">       [0, 0, 0, 1, 1, 1, 1, 0],</span>
+<span class="go">       [0, 1, 1, 0, 0, 0, 1, 0],</span>
+<span class="go">       [0, 1, 1, 0, 0, 1, 0, 1],</span>
+<span class="go">       [0, 1, 1, 1, 1, 0, 1, 1],</span>
+<span class="go">       [0, 1, 1, 1, 1, 1, 0, 0],</span>
+<span class="go">       [1, 0, 1, 0, 1, 0, 0, 0],</span>
+<span class="go">       [1, 0, 1, 0, 1, 1, 1, 1],</span>
+<span class="go">       [1, 0, 1, 1, 0, 0, 0, 1],</span>
+<span class="go">       [1, 0, 1, 1, 0, 1, 1, 0],</span>
+<span class="go">       [1, 1, 0, 0, 1, 0, 1, 0],</span>
+<span class="go">       [1, 1, 0, 0, 1, 1, 0, 1],</span>
+<span class="go">       [1, 1, 0, 1, 0, 0, 1, 1],</span>
+<span class="go">       [1, 1, 0, 1, 0, 1, 0, 0]])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
@@ -150,23 +177,19 @@ Chen, Sun and Wu (1993)</p></li>
     Index must correspond to a design in the paper.</p>
 </dd>
 </dl>
+<p class="rubric">Example</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="c1"># Word length pattern of the 32-run design with index &quot;17-12.3&quot;, from Table 3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">get_wlp</span><span class="p">(</span><span class="mi">32</span><span class="p">,</span><span class="s2">&quot;17-12.3&quot;</span><span class="p">)</span>
+<span class="go">[18, 95, 192, 354]</span>
+</pre></div>
+</div>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="main.load_tables">
 <span class="sig-prename descclassname"><span class="pre">main.</span></span><span class="sig-name descname"><span class="pre">load_tables</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#main.load_tables" title="Permalink to this definition">¶</a></dt>
 <dd><p>Return a dataframe with all designs from the Chen, Sun and Wu (1993) paper.</p>
-<dl class="simple">
-<dt>Contains the following fields:</dt><dd><p>n.runs          int     Number of runs
-index           str     ID representing the design, corresponding to the CSW 1993 paper
-n.cols          int     Number of columns
-n.added         int     Number of added factors among the columns
-design.rank     int     Rank of the design in term of the aberration criterion
-cols            str     Numbers of the added columns
-wlp             str     Word length pattern, starting at A3 (or A4 for 64-run designs)
-clear.2fi       int     Number of clear two-factor-interactions</p>
-</dd>
-</dl>
+<p>Contains the following fields: n.runs, index, n.cols, n.added, design.rank, cols, wlp, clear.2fi</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>Table of all designs.</p>
@@ -198,6 +221,7 @@ clear.2fi       int     Number of clear two-factor-interactions</p>
 <h3>Navigation</h3>
 <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
 <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="README.html">csw93 - Chen, Sun and Wu (1993)</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Package documentation</a></li>
 </ul>
 
@@ -205,7 +229,7 @@ clear.2fi       int     Number of clear two-factor-interactions</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="index.html" title="previous chapter">Welcome to csw93’s documentation!</a></li>
+      <li>Previous: <a href="README.html" title="previous chapter">csw93 - Chen, Sun and Wu (1993)</a></li>
   </ul></li>
 </ul>
 </div>

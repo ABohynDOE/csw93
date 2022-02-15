@@ -1,8 +1,8 @@
-# csw93
+# csw93 - Chen, Sun and Wu (1993)
 ![PyPI](https://img.shields.io/pypi/v/csw93)
 [![Documentation Status](https://readthedocs.org/projects/csw93/badge/?version=latest)](https://csw93.readthedocs.io/en/latest/?badge=latest)
 
-CSW93 is a Python package that generates all regular fractional factorial two-level designs from the 1993 paper of Chen, Sun and Wu: ["A catalogue of two-level and three-level fractional factorial designs with small runs"][1].
+CSW93 is a Python package that makes availalble the design matrices of all regular fractional factorial two-level designs from the 1993 paper of Chen, Sun and Wu: ["A catalogue of two-level and three-level fractional factorial designs with small runs"][1].
 
 [1]: <https://www.jstor.org/stable/1403599>
 
@@ -16,7 +16,7 @@ pip install csw93
 
 ## Usage
 
-The pakage provides three function to get
+The pakage provides three functions to get
 
 - The design matrix,
 - The word length pattern,
@@ -52,8 +52,7 @@ Please make sure to update tests as appropriate.
 
 List of the changes that will be implemented later on:
 
-- Add tests for Errors raised
-- Add examples to docstrings of functions
+- Write detailled README for readthedocs
 - Include designs from Xu (2009) and reformat the filenames of the code files
 
 ## Changelog
