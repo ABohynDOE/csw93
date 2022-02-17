@@ -18,8 +18,11 @@ def format_file(fname: str):
     # Create dictionary for the designs
     designs_dict = pd.DataFrame()
     # Run size is in filename
-    n_runs = int(re.match(r"^\d+", fname).group(0))
-    with open("tables/" + fname, "r") as f:
+    result = re.match(r"^(\w[^0-9]+)_(\d+)_?(\d?)", fname)
+    n_runs = int(result.group(2))
+    author = result.group(1)
+    
+    with open("raw_data/" + fname, "r") as f:
         text_by_lines = f.readlines()
     text = "".join(text_by_lines)
 
