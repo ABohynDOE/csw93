@@ -7,3 +7,4 @@ csw93/__pycache__/
 *.pyc
 *.pypirc
 htmlcov/
+docs/build/

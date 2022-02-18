@@ -2,8 +2,10 @@
 [![PyPI](https://img.shields.io/pypi/v/csw93)](https://pypi.org/project/csw93/)
 [![Documentation Status](https://readthedocs.org/projects/csw93/badge/?version=latest)](https://csw93.readthedocs.io/en/latest/?badge=latest)
 [![Build Status](https://app.travis-ci.com/ABohynDOE/csw93.svg?branch=main)](https://app.travis-ci.com/ABohynDOE/csw93)
+[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 CSW93 is a Python package that makes availalble the design matrices of all regular fractional factorial two-level designs from the 1993 paper of Chen, Sun and Wu: ["A catalogue of two-level and three-level fractional factorial designs with small runs"][1].
+For more information about the package and its functions, see the [documentation](https://csw93.readthedocs.io/en/latest/).
 
 [1]: <https://www.jstor.org/stable/1403599>
 
@@ -41,9 +43,33 @@ csw93.get_cfi(64, "11-5.10")
 
 ## Contributing
 
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+### Code style
 
-Please make sure to update tests as appropriate.
+Try to follow the [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide. 
+A useful tool for automated formatting is [black](https://black.readthedocs.io/en/stable/index.html).
+
+### Submitting code
+
+If you would like to contribute, please submit a pull request.
+See the [Github Hello World](https://guides.github.com/activities/hello-world/) example, if you are new to Github.
+For major changes, please open an issue first to discuss what you would like to change.
+By contributing to the repository you state you own the copyright to those contributions and agree to include your contributions as part of this project under the MIT license.
+
+### Testing
+
+If you contribute, please make sure to update the tests aproprietly.
+Continuous integration is performed on [Travis-CI](https://app.travis-ci.com/github/ABohynDOE/csw93).
+To perform tests run [`pytest`](https://docs.pytest.org/en/latest/).
+To obtain a [coverage](https://coverage.readthedocs.io) report in html, run
+```
+$ coverage run -m pytest .
+$ coverage html
+```
+
+### Contact
+
+For further information please contact Alexandre Bohyn, alexandre.bohyn at kuleuven.be
+
 
 ## License
 
