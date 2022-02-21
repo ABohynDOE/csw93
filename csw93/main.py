@@ -1,7 +1,9 @@
+import graphviz
 import numpy as np
 import pandas as pd
 import pkg_resources
-from itertools import chain, repeat
+from itertools import chain, repeat, combinations
+from math import comb
 
 
 def design_matrix(n_runs: int):
@@ -236,7 +238,7 @@ def get_cfi(n_runs: int, index: str):
     ------
     ValueError
         Number of runs must be a power of 2.
-        Index must correspond to a design in the paper.
+        Index must correspond to a design in the paper
 
     Example
     -------
@@ -262,6 +264,88 @@ def get_cfi(n_runs: int, index: str):
     # Extract clear 2fi number
     cfi = int(design_info["clear.2fi"])
     return cfi
+
+
+def clear_tfi(mat: np.array):
+    """
+    Generate the list of all clear two-factor interactions for a design.
+    A two-factor interaction is clear if it is not aliased with any main effect or any other two-factor interaction.
+
+    Parameters
+    ----------
+    mat : np.array
+        Design matrix
+
+    Returns
+    -------
+    clear_tfi_list: List[Tuple[int]]
+        List of all the clear two factor interactions, represented as tuples of two factors. The first factor is
+        denoted as 1.
+
+    """
+    # Number of two-level factors
+    n_runs, n_factors = mat.shape
+    # All combinations of two factors
+    tfi = list(combinations(range(n_factors), 2))
+    # Two-factor interaction matrix
+    tfi_mat = np.vstack([(mat[:, i] + mat[:, j]) % 2 for i, j in tfi]).T
+    # All interactions between 2FI
+    tfi_int_mat = np.vstack([(tfi_mat[:, i] + tfi_mat[:, j]) % 2 for i, j in combinations(range(
+        tfi_mat.shape[1]), 2)]).T
+    # If it sums up to 0 then there is no aliasing
+    tfi_int_clearness = tfi_int_mat.sum(axis=0)
+    # FIXME: add check for tfi and m.e. aliasing
+    # All pairs of two-factor interactions
+    tfi_int = list(combinations(tfi, 2))
+    # A TFI has at max (n chooses 2 - 1) non clear interactions
+    tfi_max_int = [comb(n_factors, 2) - 1] * len(tfi_int)
+    # All TFI, with the number of other TFI they are aliased with
+    tfi_int_aliasing = dict(zip(tfi, tfi_max_int))
+    # If a TFI is in a clear interaction, it is removed from the count of all possible aliasing
+    # if the final aliasing is zero, the TFI is clear
+    for idx, clearness in enumerate(tfi_int_clearness):
+        if clearness == n_runs // 2:
+            for tfi in tfi_int[idx]:
+                tfi_int_aliasing[tfi] -= 1
+    # Extract clear two-factor interactions from the dict
+    clear_tfi_list = [k for k, v in tfi_int_aliasing.items() if v == 0]
+    return clear_tfi_list
+
+
+def clear_interaction_graph(mat: np.array):
+    """
+    Create a clear interaction graph (CIG). In this graph, each factor is a node and each clear two-factor interaction
+    is shown as an edge between the two nodes representing the factors of the interaction.
+
+    Parameters
+    ----------
+    mat :  np.array
+        Design matrix
+
+    Returns
+    -------
+    dot : graphviz.Digraph
+        Graph object corresponding to the CIG
+
+    """
+    n_factors = mat.shape[1]
+    # Compute the clear two-factor interaction
+    clear_tfi_list = clear_tfi(mat)
+    # Build the basis of the graph
+    dot = graphviz.Digraph("name", engine="circo")
+    dot.attr(overlap="false")
+    # Create an edge for each clear interactions
+    for factor_pair in clear_tfi_list:
+        a, b = factor_pair
+        start_node = f"{a + 1}"
+        end_node = f"{b + 1}"
+        dot.edge(start_node, end_node, arrowhead="none")
+    # Create transparent edges between all factors to create a circle
+    for i in range(n_factors):
+        start_node = f'{(i % n_factors) + 1}'
+        end_node = f'{((i + 1) % n_factors) + 1}'
+        dot.edge(start_node, end_node, color="transparent", arrowhead="none")
+    return dot
 
 
 if __name__ == "__main__":
