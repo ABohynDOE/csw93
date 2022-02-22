@@ -1,9 +1,10 @@
+from itertools import chain, repeat, combinations
+from math import comb
+
 import graphviz
 import numpy as np
 import pandas as pd
 import pkg_resources
-from itertools import chain, repeat, combinations
-from math import comb
 
 
 def design_matrix(n_runs: int):
@@ -81,6 +82,8 @@ def basic_factor_matrix(n_bf: int):
         col = list(chain(*col_list))
         mat[:, i] = col
     return mat
+
+# TODO: add check if columns are given in Xu (N>64)
 
 
 def get_design(n_runs: int, index: str):
