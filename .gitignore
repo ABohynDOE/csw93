@@ -8,3 +8,5 @@ csw93/__pycache__/
 *.pypirc
 htmlcov/
 docs/build/
+
+.flake8

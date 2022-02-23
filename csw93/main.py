@@ -1,4 +1,4 @@
-from itertools import chain, repeat, combinations
+from itertools import chain, combinations, repeat
 from math import comb
 
 import graphviz
@@ -53,7 +53,7 @@ def load_tables():
         Table of all designs.
 
     """
-    filepath = pkg_resources.resource_stream(__name__, 'data/tables.csv')
+    filepath = pkg_resources.resource_stream(__name__, "data/tables.csv")
     df = pd.read_csv(filepath, header=0, sep=",")
     df["u_id"] = df["n.runs"].astype(str) + "." + df["index"]
     return df.set_index("u_id")
@@ -74,16 +74,14 @@ def basic_factor_matrix(n_bf: int):
         Basic factors matrix.
 
     """
-    mat = np.zeros((2 ** n_bf, n_bf))
+    mat = np.zeros((2**n_bf, n_bf))
     for i in range(n_bf):
-        a = 2 ** n_bf // (2 ** (i + 1))
-        b = 2 ** n_bf // (2 * a)
+        a = 2**n_bf // (2 ** (i + 1))
+        b = 2**n_bf // (2 * a)
         col_list = repeat([0] * a + [1] * a, b)
         col = list(chain(*col_list))
         mat[:, i] = col
     return mat
-
-# TODO: add check if columns are given in Xu (N>64)
 
 
 def get_design(n_runs: int, index: str):
@@ -113,7 +111,9 @@ def get_design(n_runs: int, index: str):
     Examples
     --------
 
-    >>> # Design matrix of the 16-run design with index "8-4.1", from Table 2
+    Generate the design matrix of the 16-run design with index "8-4.1" from Table 2
+    of Chen, Sun and Wu (1993)
+
     >>> get_design(16, "8-4.3")
     array([[0, 0, 0, 0, 0, 0, 0, 0],
            [0, 0, 0, 0, 0, 1, 1, 1],
@@ -150,7 +150,7 @@ def get_design(n_runs: int, index: str):
         print(index, "is not a valid design index")
         return None
     # Extract column numbers
-    basic_factors = [2 ** i for i in range(n_bf)]
+    basic_factors = [2**i for i in range(n_bf)]
     added_factors = list(map(int, design_info["cols"].split(",")))
     columns = [i - 1 for i in basic_factors + added_factors]
     columns.sort()
@@ -192,7 +192,9 @@ def get_wlp(n_runs: int, index: str):
     Example
     -------
 
-    >>> # Word length pattern of the 32-run design with index "17-12.3", from Table 3
+    Retrieve the Word length pattern of the 32-run design with index "17-12.3",
+    presented in Table 3 of Chen, Sun and Wu (1993)
+
     >>> get_wlp(32,"17-12.3")
     [18, 95, 192, 354]
 
@@ -246,7 +248,9 @@ def get_cfi(n_runs: int, index: str):
     Example
     -------
 
-    >>> # Number of clear two-factor interaction in the 64-run design with index "11-5.2", from Table 4
+    Retrieve the number of clear two-factor interaction in the 64-run design with index
+    "11-5.2", presented in Table 4 of Chen, Sun and Wu (1993)
+
     >>> get_cfi(64,"11-5.2")
     25
 
@@ -272,7 +276,8 @@ def get_cfi(n_runs: int, index: str):
 def clear_tfi(mat: np.array):
     """
     Generate the list of all clear two-factor interactions for a design.
-    A two-factor interaction is clear if it is not aliased with any main effect or any other two-factor interaction.
+    A two-factor interaction is clear if it is not aliased with any main effect or any
+    other two-factor interaction.
 
     Parameters
     ----------
@@ -282,8 +287,8 @@ def clear_tfi(mat: np.array):
     Returns
     -------
     clear_tfi_list: List[Tuple[int]]
-        List of all the clear two factor interactions, represented as tuples of two factors. The first factor is
-        denoted as 1.
+        List of all the clear two factor interactions, represented as tuples of two
+        factors. The first factor is denoted as 1.
 
     """
     # Number of two-level factors
@@ -293,8 +298,12 @@ def clear_tfi(mat: np.array):
     # Two-factor interaction matrix
     tfi_mat = np.vstack([(mat[:, i] + mat[:, j]) % 2 for i, j in tfi]).T
     # All interactions between 2FI
-    tfi_int_mat = np.vstack([(tfi_mat[:, i] + tfi_mat[:, j]) % 2 for i, j in combinations(range(
-        tfi_mat.shape[1]), 2)]).T
+    tfi_int_mat = np.vstack(
+        [
+            (tfi_mat[:, i] + tfi_mat[:, j]) % 2
+            for i, j in combinations(range(tfi_mat.shape[1]), 2)
+        ]
+    ).T
     # If it sums up to 0 then there is no aliasing
     tfi_int_clearness = tfi_int_mat.sum(axis=0)
     # FIXME: add check for tfi and m.e. aliasing
@@ -304,8 +313,8 @@ def clear_tfi(mat: np.array):
     tfi_max_int = [comb(n_factors, 2) - 1] * len(tfi_int)
     # All TFI, with the number of other TFI they are aliased with
     tfi_int_aliasing = dict(zip(tfi, tfi_max_int))
-    # If a TFI is in a clear interaction, it is removed from the count of all possible aliasing
-    # if the final aliasing is zero, the TFI is clear
+    # If a TFI is in a clear interaction, it is removed from the count of all possible
+    # aliasing, if the final aliasing is zero, the TFI is clear
     for idx, clearness in enumerate(tfi_int_clearness):
         if clearness == n_runs // 2:
             for tfi in tfi_int[idx]:
@@ -317,8 +326,9 @@ def clear_tfi(mat: np.array):
 
 def clear_interaction_graph(mat: np.array):
     """
-    Create a clear interaction graph (CIG). In this graph, each factor is a node and each clear two-factor interaction
-    is shown as an edge between the two nodes representing the factors of the interaction.
+    Create a clear interaction graph (CIG). In this graph, each factor is a node and
+    each clear two-factor interaction is shown as an edge between the two nodes
+    representing the factors of the interaction.
 
     Parameters
     ----------
@@ -345,8 +355,8 @@ def clear_interaction_graph(mat: np.array):
         dot.edge(start_node, end_node, arrowhead="none")
     # Create transparent edges between all factors to create a circle
     for i in range(n_factors):
-        start_node = f'{(i % n_factors) + 1}'
-        end_node = f'{((i + 1) % n_factors) + 1}'
+        start_node = f"{(i % n_factors) + 1}"
+        end_node = f"{((i + 1) % n_factors) + 1}"
         dot.edge(start_node, end_node, color="transparent", arrowhead="none")
     return dot
 

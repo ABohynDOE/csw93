@@ -11,25 +11,27 @@ design_indices = ["8-4.6", "8-3.5", "14-9.2", "12-6.2", "17-11.6"]
 def test_design():
     """Function produces the correct design matrix"""
     ref_matrix = np.array(
-        [[0, 0, 0, 0, 0],
-         [0, 0, 0, 1, 1],
-         [0, 0, 1, 0, 1],
-         [0, 0, 1, 1, 0],
-         [0, 1, 0, 0, 1],
-         [0, 1, 0, 1, 0],
-         [0, 1, 1, 0, 0],
-         [0, 1, 1, 1, 1],
-         [1, 0, 0, 0, 1],
-         [1, 0, 0, 1, 0],
-         [1, 0, 1, 0, 0],
-         [1, 0, 1, 1, 1],
-         [1, 1, 0, 0, 0],
-         [1, 1, 0, 1, 1],
-         [1, 1, 1, 0, 1],
-         [1, 1, 1, 1, 0]]
+        [
+            [0, 0, 0, 0, 0],
+            [0, 0, 0, 1, 1],
+            [0, 0, 1, 0, 1],
+            [0, 0, 1, 1, 0],
+            [0, 1, 0, 0, 1],
+            [0, 1, 0, 1, 0],
+            [0, 1, 1, 0, 0],
+            [0, 1, 1, 1, 1],
+            [1, 0, 0, 0, 1],
+            [1, 0, 0, 1, 0],
+            [1, 0, 1, 0, 0],
+            [1, 0, 1, 1, 1],
+            [1, 1, 0, 0, 0],
+            [1, 1, 0, 1, 1],
+            [1, 1, 1, 0, 1],
+            [1, 1, 1, 1, 0],
+        ]
     )
     comp_matrix = get_design(16, "5-1.1")
-    assert ((comp_matrix == ref_matrix).all())
+    assert (comp_matrix == ref_matrix).all()
 
 
 def test_wlp():
@@ -42,14 +44,14 @@ def test_wlp():
         [105, 35, 280, 168],
     ]
     computed_wlps = [get_wlp(x, design_indices[i]) for i, x in enumerate(run_sizes)]
-    assert (all([x == wlps[i] for i, x in enumerate(computed_wlps)]))
+    assert all([x == wlps[i] for i, x in enumerate(computed_wlps)])
 
 
 def test_cfi():
     """Function produces the correct cfi"""
     cfi = (7, 13, 3, 27, 31)
     commputed_cfi = [get_cfi(x, design_indices[i]) for i, x in enumerate(run_sizes)]
-    assert (all([x == cfi[i] for i, x in enumerate(commputed_cfi)]))
+    assert all([x == cfi[i] for i, x in enumerate(commputed_cfi)])
 
 
 class TestDesign:

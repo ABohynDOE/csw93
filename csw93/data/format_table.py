@@ -12,8 +12,8 @@ import re
 
 import pandas as pd
 
-
 # Function to format the file
+
 
 def format_file(fname: str):
     # Create dictionary for the designs
@@ -38,7 +38,9 @@ def format_file(fname: str):
     # If author is CSW, all indices are XX-XX.XX
     else:
         regex_pattern = r"\d+-\d+\.\d+"
-    col_info = [c for c in re.split(regex_pattern, text) if c is not None and len(c) > 0]
+    col_info = [
+        c for c in re.split(regex_pattern, text) if c is not None and len(c) > 0
+    ]
     design_names = [i.group(0) for i in re.finditer(regex_pattern, text)]
 
     # Loop through the names
@@ -54,8 +56,8 @@ def format_file(fname: str):
         if string_info is not None:
             # Find the reference columns
             ref_design = string_info.group(1)
-            is_ref_design = designs_dict['index'] == ref_design
-            ref_cols = designs_dict[is_ref_design]['cols'].tolist()[0]
+            is_ref_design = designs_dict["index"] == ref_design
+            ref_cols = designs_dict[is_ref_design]["cols"].tolist()[0]
             ref_cols = re.sub(",", " ", ref_cols)
             # Replace it in the string
             new_info = re.sub(r"same as design (\d+-\d+\.\d+), plus", ref_cols, info)
@@ -65,9 +67,15 @@ def format_file(fname: str):
             range_number_match = re.finditer(r"(\d+)-(\d+)", info)
             if range_number_match:
                 for match in range_number_match:
-                    missing_range = list(range(int(match.group(1)), int(match.group(2)) + 1))
+                    missing_range = list(
+                        range(int(match.group(1)), int(match.group(2)) + 1)
+                    )
                     missing_range_str = " ".join(list(map(str, missing_range)))
-                    info = re.sub(f"{missing_range[0]}-{missing_range[-1]}", missing_range_str, info)
+                    info = re.sub(
+                        f"{missing_range[0]}-{missing_range[-1]}",
+                        missing_range_str,
+                        info,
+                    )
         # Remove decimal for thousands
         info = re.sub(",", "", info)
         # All numbers from information extracted from the raw text
@@ -86,7 +94,7 @@ def format_file(fname: str):
         else:
             cols = nums[:p]
             # Dynamic allocation of the WLP size
-            wlp = nums[p: -1]
+            wlp = nums[p:-1]
             # Only last number is the CFI
             c = nums[-1]
         design_dict = {
@@ -114,4 +122,4 @@ if __name__ == "__main__":
     for table in table_fnames:
         temp_dict = format_file(table)
         designs = designs.append(temp_dict, ignore_index=True)
-    designs.to_csv('tables.csv', index=False, float_format="%.0f", na_rep="NA")
+    designs.to_csv("tables.csv", index=False, float_format="%.0f", na_rep="NA")
