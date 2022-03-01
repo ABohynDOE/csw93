@@ -80,11 +80,12 @@ For further information please contact Alexandre Bohyn, alexandre.bohyn at kuleu
 
 List of the changes that will be implemented later on:
 
-- Write detailled README for readthedocs
-- Include designs from Xu (2009) and reformat the filenames of the code files
+- Write detailled documentation for readthedocs
 
 ## Changelog
 
+- 0.4: fix wrong column numbers and added Xu 2009 to the database (not available as 
+  function yet)
 - 0.3: Integration to readthedocs.io
 - 0.2: Correct WLP
 - 0.1: initial version

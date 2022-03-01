@@ -2,4 +2,4 @@ Package documentation
 ---------------------
 
 .. automodule:: main
-   :members:
+   :members: get_design, get_wlp, get_cfi
