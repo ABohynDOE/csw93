@@ -32,6 +32,11 @@ Contact
 -------
 For further information please contact Alexandre Bohyn, alexandre.bohyn at kuleuven.be
 
+License
+-------
+
+.. include:: ../../LICENSE
+
 .. _PEP 8: https://www.python.org/dev/peps/pep-0008/
 .. _black: https://black.readthedocs.io/en/stable/index.html
 .. _Github Hello World: https://guides.github.com/activities/hello-world/
