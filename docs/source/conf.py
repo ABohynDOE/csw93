@@ -31,10 +31,23 @@ release = "0.1.0"
 # Add any Sphinx extension module names here, as strings. They can be
 # extensions coming with Sphinx (named 'sphinx.ext.*') or your custom
 # ones.
-extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "m2r2"]
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", 'sphinxcontrib.bibtex']
+
+# Add the path to the bibliography file that will be used by the sphinxcontrib.bibtex
+# extension.
+# The file should be a BibTex file in .bib format
+bibtex_bibfiles = ["references.bib"]
 
 # Add any paths that contain templates here, relative to this directory.
 templates_path = ["_templates"]
+
+# Choose the bibliography style among four choices: alpha, unsrt, plain, unsrtalpha.
+# The default is alpha
+bibtex_default_style = 'unsrt'
+
+# Define the referencing style of the bibliography entries. Available styles are:
+# label, author_year, super. The default is label
+bibtex_reference_style = "author_year"
 
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.

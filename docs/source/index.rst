@@ -5,15 +5,24 @@
 
 Welcome to csw93's documentation!
 =================================
-CSW93 is a Python package that makes availalble the design matrices of all regular fractional
-factorial two-level designs from the 1993 paper of
-Chen, Sun and Wu: `A catalogue of two-level and three-level fractional factorial designs with small runs`_.
+CSW93 is a Python package that makes availalble the design matrices of all regular
+fractional factorial two-level designs from :cite:t:`chen1993catalogue`.
+Recently, all designs from the catalog of :cite:t:`xu2009algorithmic` were also added
+to the package.
+
+Installation
+------------
+
+Use the package manager `pip <https://pip.pypa.io/en/stable/>`_ to install csw93.
+
+.. code-block:: bash
+
+    pip install csw93
 
 .. toctree::
    :maxdepth: 1
    :caption: Contents:
 
-   introduction
    usage
    contributing
    documentation
@@ -31,3 +40,8 @@ License
 .. include:: ../../LICENSE
 
 .. _A catalogue of two-level and three-level fractional factorial designs with small runs: https://www.jstor.org/stable/1403599
+
+Bibliography
+============
+
+.. bibliography::
