@@ -1,4 +1,4 @@
 sphinxcontrib-bibtex==2.4.1
 numpy==1.22.2
-graphviz==2.38
+graphviz==0.19.1
 pandas==1.4.1
