@@ -5,14 +5,14 @@
 
 Welcome to csw93's documentation!
 =================================
-CSW93 is a Python package that makes availalble the design matrices of all regular
+CSW93 is a Python package that makes available the design matrices of all regular
 fractional factorial two-level designs from :cite:t:`chen1993catalogue`.
 Recently, all designs from the catalog of :cite:t:`xu2009algorithmic` were also added
 to the package.
 
 Here under you will find an installation guide, and a brief description of the basic
 usage of the package.
-In the following sections are presented a detailled documentation, a contributing
+In the following sections are presented a detailed documentation, a contributing
 guide and a bibliography.
 
 .. toctree::
@@ -22,7 +22,6 @@ guide and a bibliography.
    documentation
    contributing
    tools
-   bibliography
 
 Installation
 ------------
@@ -35,7 +34,7 @@ Use the package manager `pip <https://pip.pypa.io/en/stable/>`_ to install csw93
 
 Usage
 -----
-The pakage provides three functions to get
+The package provides three functions to get
 
 - The design matrix,
 - The word length pattern,
