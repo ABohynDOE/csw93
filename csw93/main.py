@@ -74,10 +74,10 @@ def basic_factor_matrix(n_bf: int):
         Basic factors matrix.
 
     """
-    mat = np.zeros((2**n_bf, n_bf))
+    mat = np.zeros((2 ** n_bf, n_bf))
     for i in range(n_bf):
-        a = 2**n_bf // (2 ** (i + 1))
-        b = 2**n_bf // (2 * a)
+        a = 2 ** n_bf // (2 ** (i + 1))
+        b = 2 ** n_bf // (2 * a)
         col_list = repeat([0] * a + [1] * a, b)
         col = list(chain(*col_list))
         mat[:, i] = col
@@ -150,7 +150,7 @@ def get_design(n_runs: int, index: str):
         print(index, "is not a valid design index")
         return None
     # Extract column numbers
-    basic_factors = [2**i for i in range(n_bf)]
+    basic_factors = [2 ** i for i in range(n_bf)]
     added_factors = list(map(int, design_info["cols"].split(",")))
     columns = [i - 1 for i in basic_factors + added_factors]
     columns.sort()
@@ -223,7 +223,7 @@ def get_cfi(n_runs: int, index: str):
     Retrieve the number of clear two-factor interactions for a given run size and
     design index.
 
-    A two-factor interaction is considered clear if it not aliased with any other
+    A two-factor interaction is considered clear if it is not aliased with any other
     main effect or two-factor interaction.
 
     Parameters
@@ -309,7 +309,7 @@ def clear_tfi(mat: np.array):
     # FIXME: add check for tfi and m.e. aliasing
     # All pairs of two-factor interactions
     tfi_int = list(combinations(tfi, 2))
-    # A TFI has at max (n chooses 2 - 1) non clear interactions
+    # A TFI has at max (n chooses 2 - 1) non-clear interactions
     tfi_max_int = [comb(n_factors, 2) - 1] * len(tfi_int)
     # All TFI, with the number of other TFI they are aliased with
     tfi_int_aliasing = dict(zip(tfi, tfi_max_int))
@@ -324,7 +324,14 @@ def clear_tfi(mat: np.array):
     return clear_tfi_list
 
 
-def clear_interaction_graph(mat: np.array):
+def clear_interaction_graph(
+        n_runs: int,
+        index: str,
+        render: bool = True,
+        filename: str = None,
+        view: bool = True,
+        keep_source: bool = False,
+):
     """
     Create a clear interaction graph (CIG). In this graph, each factor is a node and
     each clear two-factor interaction is shown as an edge between the two nodes
@@ -332,8 +339,21 @@ def clear_interaction_graph(mat: np.array):
 
     Parameters
     ----------
-    mat :  np.array
-        Design matrix
+    n_runs : int
+        Number of runs
+    index : str
+        Index of the design. Equivalent to the first column in the tables of
+        Chen, Sun and Wu (1993)
+    render : bool, optional. Default is True.
+        Render the graph to a png image
+    filename : str, optional.
+        Name of the file to which the CIG will be saved. If none is provided,
+        the default name is the index.
+    view : bool, optional. Default is True.
+        Shows the rendered graph
+    keep_source : bool, optional. Default is False.
+        Keeps a file with the dot code to render the graph, it has the same name as
+        the graph.
 
     Returns
     -------
@@ -341,6 +361,8 @@ def clear_interaction_graph(mat: np.array):
         Graph object corresponding to the CIG
 
     """
+    # Create the matrix
+    mat = get_design(n_runs, index)
     n_factors = mat.shape[1]
     # Compute the clear two-factor interaction
     clear_tfi_list = clear_tfi(mat)
@@ -358,6 +380,18 @@ def clear_interaction_graph(mat: np.array):
         start_node = f"{(i % n_factors) + 1}"
         end_node = f"{((i + 1) % n_factors) + 1}"
         dot.edge(start_node, end_node, color="transparent", arrowhead="none")
+    # Render the graphviz object
+    if filename is None:
+        filename = index
+    if render:
+        dot.render(
+            filename=filename,
+            directory="CIG",
+            view=view,
+            cleanup=not keep_source,
+            format="png",
+        )
+    # Return the dot object
     return dot
 
 
