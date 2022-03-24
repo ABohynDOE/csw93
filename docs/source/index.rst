@@ -34,13 +34,7 @@ Use the package manager `pip <https://pip.pypa.io/en/stable/>`_ to install csw93
 
 Usage
 -----
-The package provides three functions to get
-
-- The design matrix,
-- The word length pattern,
-- The number of clear two-factor interactions,
-
-using only the number of runs and the index of the design.
+The package provides several functions to obtain: the design matrix, the word length pattern, and the number of clear two-factor interactions, using only the number of runs and the index of the design.
 This index corresponds to the first column in all tables of all tables from the paper.
 
 .. code-block:: python
@@ -61,5 +55,4 @@ Indices and tables
 ==================
 
 * :ref:`genindex`
-* :ref:`modindex`
 * :ref:`search`
