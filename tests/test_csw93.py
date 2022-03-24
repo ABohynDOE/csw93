@@ -1,7 +1,7 @@
-import csw93.main
-from csw93 import get_design, get_wlp, get_cfi
 import numpy as np
 import pytest
+
+from csw93 import *
 
 # Global variables for all tests
 run_sizes = [16, 32, 32, 64, 64]
@@ -79,3 +79,28 @@ class TestCfi:
 
     def test_index(self):
         assert get_cfi(16, "8-3.1") is None
+
+
+class TestCIG:
+    def test_dot_content(self):
+        d = clear_interaction_graph(32, "8-3.4", render=False)
+        reference_dotfile = 'digraph name {\n\toverlap=false\n\t1 -> 8 [arrowhead=none]\n\t2 -> 8 [arrowhead=none]\n\t3 -> 8 [arrowhead=none]\n\t4 -> 8 [arrowhead=none]\n\t5 -> 8 [arrowhead=none]\n\t6 -> 8 [arrowhead=none]\n\t7 -> 8 [arrowhead=none]\n\t1 -> 2 [arrowhead=none color=transparent]\n\t2 -> 3 [arrowhead=none color=transparent]\n\t3 -> 4 [arrowhead=none color=transparent]\n\t4 -> 5 [arrowhead=none color=transparent]\n\t5 -> 6 [arrowhead=none color=transparent]\n\t6 -> 7 [arrowhead=none color=transparent]\n\t7 -> 8 [arrowhead=none color=transparent]\n\t8 -> 1 [arrowhead=none color=transparent]\n}\n'
+        assert d.source == reference_dotfile
+
+
+class TestGen:
+    def test_num2word(self):
+        assert num2word(7) == 'abc'
+
+    def test_error_num2word(self):
+        with pytest.raises(ValueError):
+            num2word(0)
+            num2word('11')
+
+    def test_word2num(self):
+        assert word2num('abd') == 11
+
+    def test_error_word2num(self):
+        with pytest.raises(ValueError):
+            word2num('Abcd')
+            word2num('aer@')

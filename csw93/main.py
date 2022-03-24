@@ -1,3 +1,4 @@
+from collections import defaultdict, Counter
 from itertools import chain, combinations, repeat
 from math import comb
 
@@ -393,6 +394,140 @@ def clear_interaction_graph(
         )
     # Return the dot object
     return dot
+
+
+def num2word(n: int) -> str:
+    """Give the generator corresponding to a given column number.
+    A generator is a letter representation of an interaction between two or more basic
+    factors.
+
+    Parameters
+    ----------
+    n : int
+        Column number
+
+    Returns
+    -------
+    gen : str
+        Corresponding generator
+
+    Raises
+    ------
+    ValueError
+        Column number must be a positive integer
+
+    Examples
+    --------
+    Check to which generator corresponds column number 11.
+    Eleven can be decomposed in powers of two: 1, 2 and 8, so the corresponding
+    generator must contain 'a', 'b' and 'd'.
+
+    >>> num2word(11)
+    'abd'
+
+    """
+    if (n < 1) or not isinstance(n, int):
+        raise ValueError("Number must be a positive integer")
+    gen = "".join([chr(97 + i) for i, x in enumerate(bin(n)[2:][::-1]) if int(x)])
+    return gen
+
+
+def word2num(w: str) -> int:
+    """Give the generator corresponding to the given column number.
+    The generator does not contain the letter representing the added factor itself,
+    but only the letters representing the basic factors forming the interaction.
+
+    Parameters
+    ----------
+    w : str
+        Generator
+
+    Returns
+    -------
+    num : int
+        Column number
+
+    Raises
+    ------
+    ValueError
+        Generator must only contain lowercase letters from a to z
+
+    Examples
+    --------
+    Which column number is equivalent to the generator 'abc' ?
+
+    >>> word2num('abc')
+    7
+
+    """
+    if any([(ord(i) < 97 or ord(i) > 122) for i in w]):
+        raise ValueError("Generator must only contain lowercase letters")
+    letter_numbers = [ord(i) - 97 for i in w]
+    bin_num = ["0"] * (max(letter_numbers) + 1)
+    for i in letter_numbers:
+        bin_num[i] = "1"
+    num = int("".join(bin_num[::-1]), 2)
+    return num
+
+
+def defining_relation(n_runs: int, index: str, basic: bool = False,
+                      max_len: int = None, as_list: bool = False):
+    """
+    Compute the full defining relation of a design.
+    For a design with p added factors, there are 2^p - 1 words in the defining relation.
+    The words are given with the letters of the added factors, and are sorted by length.
+
+    Parameters
+    ----------
+    n_runs : int
+        Number of runs.
+    index : str
+        Index of the design. Equivalent to the first column in the tables of
+        Chen, Sun and Wu (1993)
+    basic : bool, optional
+        Include only the words of the added factors. Default is False.
+    max_len : int, optional
+        Maximum length of words to include in the defining relation. Cannot be used
+        with the basic keyword. Default is None, all words are included.
+    as_list : bool, optional
+        Return a list with all words, instead of a dictionnary. Default is False.
+
+    Returns
+    -------
+    word_dict : dict[List]
+        Dictionnary containing the defining relation. The keys are all the different
+        word lengths and the corresponding values are the words in the defining
+        relation with that length.
+
+    """
+    # TODO: add test for this function
+    word_dict = defaultdict(list)
+    # Words of added factors of the design
+    table = load_tables()
+    design_index = str(n_runs) + "." + index
+    design_info = table.loc[design_index]
+    added_factors = list(map(int, design_info["cols"].split(",")))
+    n_basic_factors = int(np.log2(n_runs))
+    words_added_factors = [
+        num2word(x) + chr(97 + i + n_basic_factors) for i, x in
+        enumerate(added_factors)
+    ]
+    # Word dictionnary based on length
+    for word in words_added_factors:
+        word_dict[len(word)].append(word)
+    if not basic:
+        for i in range(2, len(added_factors) + 1):
+            word_combinations = combinations(words_added_factors, i)
+            for word_comb in word_combinations:
+                c = Counter("".join(word_comb))
+                new_word = "".join([k for k, v in c.items() if v % 2 != 0])
+                word_dict[len(new_word)].append(new_word)
+        if max_len:
+            word_dict = {k: v for k, v in word_dict.items() if v <= max_len}
+    word_dict = dict(word_dict)
+    if as_list:
+        return list(chain(*[v for v in word_dict.values()]))
+    return word_dict
 
 
 if __name__ == "__main__":
