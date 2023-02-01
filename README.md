@@ -2,9 +2,8 @@
 
 [![PyPI](https://img.shields.io/pypi/v/csw93)](https://pypi.org/project/csw93/)
 [![Documentation Status](https://readthedocs.org/projects/csw93/badge/?version=latest)](https://csw93.readthedocs.io/en/latest/?badge=latest)
-[![Build Status](https://app.travis-ci.com/ABohynDOE/csw93.svg?branch=main)](https://app.travis-ci.com/ABohynDOE/csw93)
+![Build Status](https://github.com/ABohynDOE/csw93/actions/workflows/python-app.yml/badge.svg)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Coverage Status](https://coveralls.io/repos/github/ABohynDOE/csw93/badge.svg?branch=main)](https://coveralls.io/github/ABohynDOE/csw93?branch=main)
 
 CSW93 is a Python package that makes availalble the design matrices of all regular fractional factorial two-level designs from the 1993 paper of Chen, Sun and Wu: ["A catalogue of two-level and three-level fractional factorial designs with small runs"][1].
 For more information about the package and its functions, see the [documentation](https://csw93.readthedocs.io/en/latest/).
