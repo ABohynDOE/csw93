@@ -1,4 +1,5 @@
 # csw93 - Chen, Sun and Wu (1993)
+
 [![PyPI](https://img.shields.io/pypi/v/csw93)](https://pypi.org/project/csw93/)
 [![Documentation Status](https://readthedocs.org/projects/csw93/badge/?version=latest)](https://csw93.readthedocs.io/en/latest/?badge=latest)
 [![Build Status](https://app.travis-ci.com/ABohynDOE/csw93.svg?branch=main)](https://app.travis-ci.com/ABohynDOE/csw93)
@@ -46,7 +47,7 @@ csw93.get_cfi(64, "11-5.10")
 
 ### Code style
 
-Try to follow the [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide. 
+Try to follow the [PEP 8](https://www.python.org/dev/peps/pep-0008/) style guide.
 A useful tool for automated formatting is [black](https://black.readthedocs.io/en/stable/index.html).
 
 ### Submitting code
@@ -62,15 +63,15 @@ If you contribute, please make sure to update the tests aproprietly.
 Continuous integration is performed on [Travis-CI](https://app.travis-ci.com/github/ABohynDOE/csw93).
 To perform tests run [`pytest`](https://docs.pytest.org/en/latest/).
 To obtain a [coverage](https://coverage.readthedocs.io) report in html, run
-```
-$ coverage run -m pytest .
-$ coverage html
+
+```bash
+coverage run -m pytest .
+coverage html
 ```
 
 ### Contact
 
 For further information please contact Alexandre Bohyn, alexandre.bohyn at kuleuven.be
-
 
 ## License
 
@@ -84,7 +85,9 @@ List of the changes that will be implemented later on:
 
 ## Changelog
 
-- 0.4: fix wrong column numbers and added Xu 2009 to the database (not available as 
+- 0.6 : Addition of `word2num` and `num2word` functions
+- 0.5 : Remove unused function from docs
+- 0.4: fix wrong column numbers and added Xu 2009 to the database (not available as
   function yet)
 - 0.3: Integration to readthedocs.io
 - 0.2: Correct WLP
