@@ -30,10 +30,10 @@ build-backend = "poetry.core.masonry.api"
 [tool.ruff]
 # Enable Pyflakes `E` and `F` codes by default.
 select = ["E", "F"]
-ignore = ["E203"]
+ignore = []
 
 # Allow autofix for all enabled rules (when `--fix`) is provided.
-fixable = ["A", "B", "C", "D", "E", "F", "..."]
+fixable = ["A", "B", "C", "D", "E", "F"]
 unfixable = []
 
 # Exclude a variety of commonly ignored directories.

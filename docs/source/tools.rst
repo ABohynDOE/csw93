@@ -7,4 +7,6 @@ Module documentation
 
 .. autofunction:: main.get_cfi
 
-.. autofunction:: main.clear_interaction_graph
+.. autofunction:: main.num2word
+
+.. autofunction:: main.word2num

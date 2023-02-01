@@ -66,7 +66,7 @@ For example, the 32-run design "8-3.4" has eight factors and 7 clear two-factor 
 On the graph we see clearly that all clear two-factor interactions involve factor 8.
 So one experimental variable is suspected to have high interaction effect with the others, it might be interesting to assign it to factor 8 in the experimental design.
 
-To generate the clear interaction graph of a design, simply use the :func:`main.clear_interaction_graph` function.
+For the moment, there is no function available to generate such a graph for the designs of the two catalogs.
 
 Bibliography
 ============
