@@ -1,5 +1,6 @@
 .idea/
 .pytest_cache/
+.mypy_cache/
 .coverage
 tests/__pycache__/
 csw93/__pycache__/
@@ -8,5 +9,4 @@ csw93/__pycache__/
 *.pypirc
 htmlcov/
 docs/build/
-
-.flake8
+.ruff_cache/
