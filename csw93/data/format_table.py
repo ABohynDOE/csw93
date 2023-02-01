@@ -1,13 +1,12 @@
 # -*- coding: utf-8 -*-
 """
-Read the txt files containing the raw design tables from Chen, Sun and Wu (1993), format them and store them
-in a new excel file, with one sheet per run size.
+Read the txt files containing the raw design tables from Chen, Sun and Wu (1993), format
+them and store them in a new Excel file, with one sheet per run size.
 Created on Wed Jan 19 15:57:58 2022
 
 @author: Alexandre Bohyn - alexandre dot bohyn [at] kuleuven dot be
 """
 import os
-
 # % Packages
 import re
 
@@ -30,8 +29,9 @@ def format_file(fname: str):
         text_by_lines[0] = ""
     text = "".join(text_by_lines)
 
-    # Line is split in index of the design and rest of the informations
-    # If author is Xu, there are two types of indices: XX-XX.XX and XX-XX, so the .XX is optional in the regex search
+    # Line is split in index of the design and rest of the information
+    # If author is Xu, there are two types of indices: XX-XX.XX and XX-XX, so the .XX is
+    # optional in the regex search
     if author == "Xu" and n_runs != 128:
         regex_pattern = r"\d+-\d+[\.\d+]*(?!,)"
     elif n_runs == 128:

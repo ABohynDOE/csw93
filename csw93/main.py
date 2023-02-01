@@ -1,11 +1,8 @@
-from collections import defaultdict, Counter
-from itertools import chain, combinations, repeat
-from math import comb
-
-import graphviz
+from itertools import chain, repeat
 import numpy as np
 import pandas as pd
 import pkg_resources
+from defining_relation import DefiningRelation
 
 
 def design_matrix(n_runs: int):
@@ -46,7 +43,8 @@ def load_tables():
     """
     Return a dataframe with all designs from the Chen, Sun and Wu (1993) paper.
 
-    Contains the following fields: n.runs, index, n.cols, n.added, design.rank, cols, wlp, clear.2fi
+    Contains the following fields: n.runs, index, n.cols, n.added, design.rank, cols,
+    wlp, clear.2fi
 
     Returns
     -------
@@ -148,7 +146,7 @@ def get_design(n_runs: int, index: str):
     try:
         design_info = table.loc[design_index]
     except KeyError:
-        print(index, "is not a valid design index")
+        print(index, "is not a valid design index for ", n_runs, "-run designs")
         return None
     # Extract column numbers
     basic_factors = [2 ** i for i in range(n_bf)]
@@ -274,128 +272,6 @@ def get_cfi(n_runs: int, index: str):
     return cfi
 
 
-def clear_tfi(mat: np.array):
-    """
-    Generate the list of all clear two-factor interactions for a design.
-    A two-factor interaction is clear if it is not aliased with any main effect or any
-    other two-factor interaction.
-
-    Parameters
-    ----------
-    mat : np.array
-        Design matrix
-
-    Returns
-    -------
-    clear_tfi_list: List[Tuple[int]]
-        List of all the clear two factor interactions, represented as tuples of two
-        factors. The first factor is denoted as 1.
-
-    """
-    # Number of two-level factors
-    n_runs, n_factors = mat.shape
-    # All combinations of two factors
-    tfi = list(combinations(range(n_factors), 2))
-    # Two-factor interaction matrix
-    tfi_mat = np.vstack([(mat[:, i] + mat[:, j]) % 2 for i, j in tfi]).T
-    # All interactions between 2FI
-    tfi_int_mat = np.vstack(
-        [
-            (tfi_mat[:, i] + tfi_mat[:, j]) % 2
-            for i, j in combinations(range(tfi_mat.shape[1]), 2)
-        ]
-    ).T
-    # If it sums up to 0 then there is no aliasing
-    tfi_int_clearness = tfi_int_mat.sum(axis=0)
-    # FIXME: add check for tfi and m.e. aliasing
-    # All pairs of two-factor interactions
-    tfi_int = list(combinations(tfi, 2))
-    # A TFI has at max (n chooses 2 - 1) non-clear interactions
-    tfi_max_int = [comb(n_factors, 2) - 1] * len(tfi_int)
-    # All TFI, with the number of other TFI they are aliased with
-    tfi_int_aliasing = dict(zip(tfi, tfi_max_int))
-    # If a TFI is in a clear interaction, it is removed from the count of all possible
-    # aliasing, if the final aliasing is zero, the TFI is clear
-    for idx, clearness in enumerate(tfi_int_clearness):
-        if clearness == n_runs // 2:
-            for tfi in tfi_int[idx]:
-                tfi_int_aliasing[tfi] -= 1
-    # Extract clear two-factor interactions from the dict
-    clear_tfi_list = [k for k, v in tfi_int_aliasing.items() if v == 0]
-    return clear_tfi_list
-
-
-def clear_interaction_graph(
-        n_runs: int,
-        index: str,
-        render: bool = True,
-        filename: str = None,
-        view: bool = True,
-        keep_source: bool = False,
-):
-    """
-    Create a clear interaction graph (CIG). In this graph, each factor is a node and
-    each clear two-factor interaction is shown as an edge between the two nodes
-    representing the factors of the interaction.
-
-    Parameters
-    ----------
-    n_runs : int
-        Number of runs
-    index : str
-        Index of the design. Equivalent to the first column in the tables of
-        Chen, Sun and Wu (1993)
-    render : bool, optional. Default is True.
-        Render the graph to a png image
-    filename : str, optional.
-        Name of the file to which the CIG will be saved. If none is provided,
-        the default name is the index.
-    view : bool, optional. Default is True.
-        Shows the rendered graph
-    keep_source : bool, optional. Default is False.
-        Keeps a file with the dot code to render the graph, it has the same name as
-        the graph.
-
-    Returns
-    -------
-    dot : graphviz.Digraph
-        Graph object corresponding to the CIG
-
-    """
-    # Create the matrix
-    mat = get_design(n_runs, index)
-    n_factors = mat.shape[1]
-    # Compute the clear two-factor interaction
-    clear_tfi_list = clear_tfi(mat)
-    # Build the basis of the graph
-    dot = graphviz.Digraph("name", engine="circo")
-    dot.attr(overlap="false")
-    # Create an edge for each clear interactions
-    for factor_pair in clear_tfi_list:
-        a, b = factor_pair
-        start_node = f"{a + 1}"
-        end_node = f"{b + 1}"
-        dot.edge(start_node, end_node, arrowhead="none")
-    # Create transparent edges between all factors to create a circle
-    for i in range(n_factors):
-        start_node = f"{(i % n_factors) + 1}"
-        end_node = f"{((i + 1) % n_factors) + 1}"
-        dot.edge(start_node, end_node, color="transparent", arrowhead="none")
-    # Render the graphviz object
-    if filename is None:
-        filename = index
-    if render:
-        dot.render(
-            filename=filename,
-            directory="CIG",
-            view=view,
-            cleanup=not keep_source,
-            format="png",
-        )
-    # Return the dot object
-    return dot
-
-
 def num2word(n: int) -> str:
     """Give the generator corresponding to a given column number.
     A generator is a letter representation of an interaction between two or more basic
@@ -470,8 +346,7 @@ def word2num(w: str) -> int:
     return num
 
 
-def defining_relation(n_runs: int, index: str, basic: bool = False,
-                      max_len: int = None, as_list: bool = False):
+def defining_relation(n_runs: int, index: str):
     """
     Compute the full defining relation of a design.
     For a design with p added factors, there are 2^p - 1 words in the defining relation.
@@ -484,24 +359,16 @@ def defining_relation(n_runs: int, index: str, basic: bool = False,
     index : str
         Index of the design. Equivalent to the first column in the tables of
         Chen, Sun and Wu (1993)
-    basic : bool, optional
-        Include only the words of the added factors. Default is False.
-    max_len : int, optional
-        Maximum length of words to include in the defining relation. Cannot be used
-        with the basic keyword. Default is None, all words are included.
-    as_list : bool, optional
-        Return a list with all words, instead of a dictionnary. Default is False.
-
     Returns
     -------
-    word_dict : dict[List]
-        Dictionnary containing the defining relation. The keys are all the different
+    defining_relation : DefiningRelation
+        Object of the DefiningRelation class. It can be seen as a dictionnary
+        containing the defining relation. The keys are all the different
         word lengths and the corresponding values are the words in the defining
         relation with that length.
 
     """
     # TODO: add test for this function
-    word_dict = defaultdict(list)
     # Words of added factors of the design
     table = load_tables()
     design_index = str(n_runs) + "." + index
@@ -509,25 +376,10 @@ def defining_relation(n_runs: int, index: str, basic: bool = False,
     added_factors = list(map(int, design_info["cols"].split(",")))
     n_basic_factors = int(np.log2(n_runs))
     words_added_factors = [
-        num2word(x) + chr(97 + i + n_basic_factors) for i, x in
-        enumerate(added_factors)
+        num2word(x) + chr(97 + i + n_basic_factors) for i, x in enumerate(added_factors)
     ]
     # Word dictionnary based on length
-    for word in words_added_factors:
-        word_dict[len(word)].append(word)
-    if not basic:
-        for i in range(2, len(added_factors) + 1):
-            word_combinations = combinations(words_added_factors, i)
-            for word_comb in word_combinations:
-                c = Counter("".join(word_comb))
-                new_word = "".join([k for k, v in c.items() if v % 2 != 0])
-                word_dict[len(new_word)].append(new_word)
-        if max_len:
-            word_dict = {k: v for k, v in word_dict.items() if v <= max_len}
-    word_dict = dict(word_dict)
-    if as_list:
-        return list(chain(*[v for v in word_dict.values()]))
-    return word_dict
+    return DefiningRelation(words_added_factors)
 
 
 if __name__ == "__main__":
