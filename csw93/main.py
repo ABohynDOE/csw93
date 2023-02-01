@@ -2,7 +2,6 @@ from itertools import chain, repeat
 import numpy as np
 import pandas as pd
 import pkg_resources
-from defining_relation import DefiningRelation
 
 
 def design_matrix(n_runs: int):
@@ -73,10 +72,10 @@ def basic_factor_matrix(n_bf: int):
         Basic factors matrix.
 
     """
-    mat = np.zeros((2**n_bf, n_bf))
+    mat = np.zeros((2 ** n_bf, n_bf))
     for i in range(n_bf):
-        a = 2**n_bf // (2 ** (i + 1))
-        b = 2**n_bf // (2 * a)
+        a = 2 ** n_bf // (2 ** (i + 1))
+        b = 2 ** n_bf // (2 * a)
         col_list = repeat([0] * a + [1] * a, b)
         col = list(chain(*col_list))
         mat[:, i] = col
@@ -149,7 +148,7 @@ def get_design(n_runs: int, index: str):
         print(index, "is not a valid design index for ", n_runs, "-run designs")
         return None
     # Extract column numbers
-    basic_factors = [2**i for i in range(n_bf)]
+    basic_factors = [2 ** i for i in range(n_bf)]
     added_factors = list(map(int, design_info["cols"].split(",")))
     columns = [i - 1 for i in basic_factors + added_factors]
     columns.sort()
@@ -344,42 +343,6 @@ def word2num(w: str) -> int:
         bin_num[i] = "1"
     num = int("".join(bin_num[::-1]), 2)
     return num
-
-
-def defining_relation(n_runs: int, index: str):
-    """
-    Compute the full defining relation of a design.
-    For a design with p added factors, there are 2^p - 1 words in the defining relation.
-    The words are given with the letters of the added factors, and are sorted by length.
-
-    Parameters
-    ----------
-    n_runs : int
-        Number of runs.
-    index : str
-        Index of the design. Equivalent to the first column in the tables of
-        Chen, Sun and Wu (1993)
-    Returns
-    -------
-    defining_relation : DefiningRelation
-        Object of the DefiningRelation class. It can be seen as a dictionnary
-        containing the defining relation. The keys are all the different
-        word lengths and the corresponding values are the words in the defining
-        relation with that length.
-
-    """
-    # TODO: add test for this function
-    # Words of added factors of the design
-    table = load_tables()
-    design_index = str(n_runs) + "." + index
-    design_info = table.loc[design_index]
-    added_factors = list(map(int, design_info["cols"].split(",")))
-    n_basic_factors = int(np.log2(n_runs))
-    words_added_factors = [
-        num2word(x) + chr(97 + i + n_basic_factors) for i, x in enumerate(added_factors)
-    ]
-    # Word dictionnary based on length
-    return DefiningRelation(words_added_factors)
 
 
 if __name__ == "__main__":
